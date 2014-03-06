@@ -7,10 +7,23 @@ implements Comparator<String>
 
 {
   /**
+   * Custom comparator for strings in SkipListOfStrings
+   * 
    * NIL is the biggest string
    * LIN is the smallest string
+   * For all String str != "NIL", !="LIN"
+   * str<"NIL"
+   * str>"LIN"
    */
- @Override
+ 
+ /**
+  * @param s1 and s2, strings to compare
+  * @returns
+  * 0 if s1==s2
+  * -1 if s1<s2
+  * 1 if s1>s2
+  */ 
+  @Override
   public int compare(String s1, String s2)
   {
     if (s1.equals(s2))
@@ -24,4 +37,4 @@ implements Comparator<String>
     else return 1;
   }//compare(String, String)
 
-}
+}//StringComparator class
