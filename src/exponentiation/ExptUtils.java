@@ -5,6 +5,8 @@ public class ExptUtils
   /**
    * Compute x^n.
    * 
+   * @param x, double to be raised to the power of n
+   * @param n, integer, the power
    * @pre n >= 1.
    * @post n and x are unchanged
    * @returns x^n
@@ -12,6 +14,7 @@ public class ExptUtils
    * Invariance:
    * x^n >= temp >= x
    * n >= i >= 1
+   * temp^i == x^n
    */
   public static double expt(double x, int n)
   {
