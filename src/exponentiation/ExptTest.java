@@ -58,4 +58,4 @@ public class ExptTest
       }// for iterating numbers
   } // doubleTesting()
 
-}
+}//ExptTest class
