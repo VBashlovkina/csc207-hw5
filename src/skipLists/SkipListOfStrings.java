@@ -8,7 +8,7 @@ public class SkipListOfStrings
       SetOfStrings
 {
   public static final int MIN_SIZE = 16;
-  public static final StringComparator sC = new StringComparator();
+  public static final StringComparator sC = new StringComparator ();
 
   // Fields
   ListObject head;
@@ -22,23 +22,23 @@ public class SkipListOfStrings
    * 
    * @param n
    */
-  public SkipListOfStrings()
+  public SkipListOfStrings ()
   {
     this.size = 0;
     this.maxLevel = 1;
     // this.maxLevel = (int) Math.log((double) n / (int) Math.log(2));
-    head = new ListObject(maxLevel, "LIN");
-    tail = new ListObject(maxLevel, "NIL");
+    head = new ListObject (maxLevel, "LIN");
+    tail = new ListObject (maxLevel, "NIL");
     head.next = tail;
     head.pointers[0].next = tail.pointers[0];
   }// SkipListOfStrings()
 
-  public SkipListOfStrings(int n)
+  public SkipListOfStrings (int n)
   {
     this.size = n;
-    this.maxLevel = (int) Math.log((double) n / (int) Math.log(2));
-    head = new ListObject(maxLevel, "LIN");
-    tail = new ListObject(maxLevel, "NIL");
+    this.maxLevel = (int) Math.log ((double) n / (int) Math.log (2));
+    head = new ListObject (maxLevel, "LIN");
+    tail = new ListObject (maxLevel, "NIL");
     for (int i = 0; i < maxLevel; i++)
       head.pointers[i].next = tail.pointers[i];
   }// SkipListOfStrings()
@@ -46,18 +46,20 @@ public class SkipListOfStrings
   /*
    * public void forward() { this.head = this.head.next; }//forward()
    */
-  public boolean empty()
+  public boolean
+    empty ()
   {
-    return this.head.next.val.equals(this.tail.val);
+    return this.head.next.val.equals (this.tail.val);
 
   }// empty()
 
-  public int pickLevel()
+  public int
+    pickLevel ()
   {
-    Random gen = new Random();
+    Random gen = new Random ();
     for (int i = 0; i < this.maxLevel; i++)
       {
-        if (gen.nextInt(this.maxLevel) < this.maxLevel / 2)
+        if (gen.nextInt (this.maxLevel) < this.maxLevel / 2)
           return i;
       }// for iterating through levels
     return this.maxLevel;
@@ -70,7 +72,8 @@ public class SkipListOfStrings
    * @return list of this.maxLevel objects such that o.val<str but
    *         o.next.val>=str
    */
-  public ListObject[] findPlace(String str)
+  public ListObject[]
+    findPlace (String str)
   {
     ListObject x = this.head;
     ListObject[] previous = new ListObject[this.maxLevel];
@@ -78,7 +81,7 @@ public class SkipListOfStrings
       {
 
         // as long as it doesn't overshoot, move on
-        while (sC.compare(x.next.pointers[i].val, str) < 0)
+        while (sC.compare (x.next.pointers[i].val, str) < 0)
           x = x.next;
         // when the next element overshoots, the current element potentially
         // precedes the str we are looking for
@@ -87,12 +90,13 @@ public class SkipListOfStrings
     return previous;
   }
 
-  public String toString()
+  public String
+    toString ()
   {
     String result = "";
     ListObject x = this.head.next;
     int i = 0;
-    while (sC.compare(x.val, "NIL") < 0)
+    while (sC.compare (x.val, "NIL") < 0)
       {
         result = result + ", " + i + ": " + x.val;
         i++;
@@ -101,18 +105,19 @@ public class SkipListOfStrings
   }// toString()
 
   @Override
-  public boolean contains(String str)
+  public boolean
+    contains (String str)
   {
     ListObject x = this.head;
     // check if empty
-    if (this.empty())
+    if (this.empty ())
       return false;
 
     for (int i = this.maxLevel - 1; i >= 0; i--)
       {
-        if (sC.compare(str, x.next.pointers[i].val) == 0)
+        if (sC.compare (str, x.next.pointers[i].val) == 0)
           return true;
-        while (sC.compare(x.next.pointers[i].val, str) < 0)
+        while (sC.compare (x.next.pointers[i].val, str) < 0)
           x = x.next;
       }// for iterating levels
 
@@ -120,27 +125,27 @@ public class SkipListOfStrings
   }// contains(String)
 
   @Override
-  public void add(String str)
+  public void
+    add (String str)
   {
     this.size += 1;
     // the optimal maxLevel is log(base 2) of size
-    this.maxLevel = (int) (Math.log(this.size) / Math.log(2));
+    this.maxLevel = (int) (Math.log (this.size) / Math.log (2));
 
     if (this.maxLevel == 0)// max level has to at least 1
       this.maxLevel++;
 
     this.head.pointers = new ListObject[this.maxLevel];
-    Arrays.fill(this.head.pointers, new ListObject("LIN"));
+    Arrays.fill (this.head.pointers, new ListObject ("LIN"));
 
     this.tail.pointers = new ListObject[this.maxLevel];
-    Arrays.fill(this.tail.pointers, new ListObject("NIL"));
+    Arrays.fill (this.tail.pointers, new ListObject ("NIL"));
 
-    ListObject[] prev = findPlace(str);
+    ListObject[] prev = findPlace (str);
+    int newLevel = this.pickLevel ();
 
-    int newLevel = this.pickLevel();
-
-    ListObject toAdd = new ListObject(newLevel, str);
-    if (this.empty())
+    ListObject toAdd = new ListObject (newLevel, str);
+    if (this.empty ())
       {
         this.head.pointers[0].next = toAdd.pointers[0];
         toAdd.pointers[0].next = this.tail.pointers[0];
@@ -153,29 +158,32 @@ public class SkipListOfStrings
         int prevLen = prev.length - 1;
         for (int i = newLevel - 1; i >= 0; i--)
           {
-            System.out.println(prevLen - i);
-            System.out.println(prev[0].val);
-            toAdd.pointers[i].next = prev[prevLen - i].pointers[i].next;
-            prev[prevLen - i].pointers[i].next = toAdd.pointers[i];
+            toAdd.pointers[i].next = prev[0].next;
+            prev[prevLen - i].next = toAdd.pointers[i];
           }// for reassigning pointers
-        toAdd.next = prev[prevLen - 1].pointers[0];
-        prev[prevLen - 1].next = toAdd.pointers[0];
+        toAdd.next = prev[prevLen];
+        prev[prevLen].next = toAdd.pointers[0];
       }
   }// add(String)
 
   @Override
-  public void remove(String str)
+  public void
+    remove (String str)
   {
-    this.maxLevel =
-        (int) Math.log((double) (this.size - 1) / (int) Math.log(2));
-    ListObject x = this.head;
-    for (int i = this.maxLevel; i > 0; i--)
+    this.size -= 1;
+    // the optimal maxLevel is log(base 2) of size
+    this.maxLevel = (int) (Math.log (this.size) / Math.log (2));
+
+    if (this.maxLevel == 0)// max level has to at least 1
+      this.maxLevel++;
+
+    ListObject[] prev = findPlace (str); // pointers for prev
+    int prevLen = prev.length - 1; // length of prev
+    for (int i = prevLen; i >= 0; i--)
       {
-        while (sC.compare(x.next.pointers[i].val, str) < 0)
-          x = x.next;
-      }// for iterating levels
-    x = x.next;
-    // if (sC.compare(x.val, str) == 0)
-    // nvm refer to article
-  }
-}
+        prev[prevLen - i].next = 
+            prev[prevLen - i].next.next;
+      }// for reassigning pointers
+    // toAdd.next = prev[prevLen];
+  } // remove (String str)
+} // class SkipListOfStrings
