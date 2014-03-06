@@ -2,17 +2,20 @@ package skipLists;
 
 public class ListObject
 {
-//Fileds
-  int level;
-  ListObject[] pointers;
-  String val;
-  ListObject next;
+  /*
+  * ListObjects can be used as nodes of SkipListsOfStrings
+  */
   
- //Constructor
+  //Fileds
+  int level;
+  ListObject[] pointers; //array of pointers to the next node at each level
+  String val; // the string contained by the node
+  ListObject next; //pointer to the immeadiate next node
+  
+   //Constructors
   /**
    * Used for subunits of ListObjects
-   * do i need this??
-   * 
+   * @papam str
    */
   public ListObject(String str)
   {
@@ -22,7 +25,7 @@ public class ListObject
   
   /**
    * Constructor for multi-level ListObjects
-   * @param lvl
+   * @param lvl, the desired level of the node
    * @param str
    */
   public ListObject(int lvl, String str)
